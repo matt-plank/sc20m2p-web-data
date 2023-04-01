@@ -1,10 +1,8 @@
-import uuid
-
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from . import models, serializers
+from . import models, payments, serializers
 
 
 class FlightView(APIView):
@@ -65,3 +63,36 @@ class BookingView(APIView):
 
         # Return the uuid of the booking
         return Response(data={"bookingID": booking.id}, status=status.HTTP_201_CREATED)  # type: ignore
+
+
+class PaymentNotificationView(APIView):
+    """Payment notification view."""
+
+    def post(self, request):
+        """Create a new payment notification."""
+
+        # Get the booking ID and payment provider ID from request JSON
+        booking_id = request.data.get("booking_id")
+        payment_provider_name = request.data.get("payment_provider")
+
+        # Find the payment provider
+        payment_provider = models.PaymentProvider.objects.filter(name=payment_provider_name).first()
+
+        if payment_provider is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        # Find the booking
+        booking = models.Booking.objects.filter(id=booking_id).first()
+
+        if booking is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        # Check payment with the payment provider
+        if not payments.check_payment(booking, payment_provider, assume_true=True):
+            return Response(data={"message": "Could not verify payment"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Mark booking as paid
+        booking.activated = True
+        booking.save()
+
+        return Response(status=status.HTTP_200_OK)
