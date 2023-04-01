@@ -28,6 +28,8 @@ class TestBookings(TestCase):
             ticketPrice=19.0,
         )
 
+        models.PaymentProvider.objects.create(name="PayPal", url="https://paypalAPI.com/")
+
     def test_create_booking_successful(self):
         """Test creating a booking (unpaid)."""
         response = self.client.post(
@@ -78,5 +80,60 @@ class TestBookings(TestCase):
                 "seat_number": 101,
             },
         )
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_then_activate_booking(self):
+        """Test creating a booking and then activating it."""
+        response = self.client.post(
+            "/bookings/booking",
+            {
+                "flight_id": 1,
+                "name": "John Smith",
+                "seat_number": 1,
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.json(), {"bookingID": 1})
+
+        response = self.client.post("/bookings/paymentNotification", {"booking_id": 1, "payment_provider": "PayPal"})
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json(), {"bookingID": 1})
+
+    def test_create_then_activate_booking_bad_booking_id(self):
+        """Test creating a booking and then activating it with a bad booking id."""
+        response = self.client.post(
+            "/bookings/booking",
+            {
+                "flight_id": 1,
+                "name": "John Smith",
+                "seat_number": 1,
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.json(), {"bookingID": 1})
+
+        response = self.client.post("/bookings/paymentNotification", {"booking_id": 2, "payment_provider": "PayPal"})
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_create_then_activate_booking_bad_payment_provider(self):
+        """Test creating a booking and then activating it with a bad payment provider."""
+        response = self.client.post(
+            "/bookings/booking",
+            {
+                "flight_id": 1,
+                "name": "John Smith",
+                "seat_number": 1,
+            },
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.json(), {"bookingID": 1})
+
+        response = self.client.post("/bookings/paymentNotification", {"booking_id": 1, "payment_provider": "Stripe"})
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
