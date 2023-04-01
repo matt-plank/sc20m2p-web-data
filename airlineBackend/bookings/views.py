@@ -2,15 +2,15 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from . import models, payments, serializers
+from . import db, models, payments, serializers
 
 
 class FlightView(APIView):
     """Flight view."""
 
-    def get(self, request, format=None):
+    def get(self, request):
         """Get all flights."""
-        all_flights = models.Flight.objects.all()
+        all_flights = db.all_flights()
         serialized_flights = serializers.FlightSerializer(all_flights, many=True)
 
         return Response(data=serialized_flights.data, status=status.HTTP_200_OK)
@@ -19,9 +19,9 @@ class FlightView(APIView):
 class LocationView(APIView):
     """Location view."""
 
-    def get(self, request, format=None):
+    def get(self, request):
         """Get all locations."""
-        all_locations = models.Location.objects.all()
+        all_locations = db.all_locations()
         serialized_locations = serializers.LocationSerializer(all_locations, many=True)
 
         return Response(data=serialized_locations.data, status=status.HTTP_200_OK)
@@ -39,7 +39,7 @@ class BookingView(APIView):
         seat_number = request.data.get("seat_number")
 
         # Check there is a flight with id flight_id
-        flight = models.Flight.objects.filter(id=flight_id).first()
+        flight = db.flight_by_id(flight_id)
         if flight is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -48,7 +48,7 @@ class BookingView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         # Check there is no booking with the same flight and seat number
-        testBooking = models.Booking.objects.filter(flight=flight, seatNumber=seat_number).first()
+        testBooking = db.booking_by_flight_and_seat_number(flight, seat_number)
         if testBooking is not None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -76,13 +76,13 @@ class PaymentNotificationView(APIView):
         payment_provider_name = request.data.get("payment_provider")
 
         # Find the payment provider
-        payment_provider = models.PaymentProvider.objects.filter(name=payment_provider_name).first()
+        payment_provider = db.payment_provider_from_name(payment_provider_name)
 
         if payment_provider is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         # Find the booking
-        booking = models.Booking.objects.filter(id=booking_id).first()
+        booking = db.booking_by_id(booking_id)
 
         if booking is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
