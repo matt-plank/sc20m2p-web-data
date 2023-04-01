@@ -95,4 +95,4 @@ class PaymentNotificationView(APIView):
         booking.activated = True
         booking.save()
 
-        return Response(status=status.HTTP_200_OK)
+        return Response(data={"bookingID": booking.id}, status=status.HTTP_200_OK)  # type: ignore
