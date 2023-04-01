@@ -14,3 +14,11 @@ class FlightSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Flight
         fields = "__all__"
+
+
+class LocationSerializer(serializers.ModelSerializer):
+    """Serializer for the Location model."""
+
+    class Meta:
+        model = models.Location
+        fields = "__all__"
