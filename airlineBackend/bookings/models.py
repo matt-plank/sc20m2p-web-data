@@ -34,3 +34,13 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"{self.userName} booked seat {self.seatNumber} on {self.flight}"
+
+
+class PaymentProvider(models.Model):
+    """A payment provider."""
+
+    name = models.CharField(max_length=255)
+    url = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
