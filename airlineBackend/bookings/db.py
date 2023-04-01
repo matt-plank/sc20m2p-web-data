@@ -1,3 +1,10 @@
+"""Database access functions.
+
+This module contains functions that access the database. I would consider
+it to be good practice to put all database access in one place, so that
+if you ever need to change the database, you only need to change this
+module."""
+
 from . import models
 
 
