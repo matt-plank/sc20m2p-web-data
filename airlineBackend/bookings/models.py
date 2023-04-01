@@ -36,7 +36,11 @@ class Booking(models.Model):
 
 
 class PaymentProvider(models.Model):
-    """A payment provider."""
+    """A payment provider.
+
+    Used to track which payment providers the airline will accept payments with.
+    The url field is the URL of the payment provider's API, used to verify payments.
+    A payment provider database record can only be created / managed on the admin dashboard."""
 
     name = models.CharField(max_length=255)
     url = models.CharField(max_length=255)
