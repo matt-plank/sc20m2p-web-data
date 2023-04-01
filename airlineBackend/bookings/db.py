@@ -1,5 +1,3 @@
-from django.db.models import BaseManager
-
 from . import models
 
 
@@ -23,11 +21,11 @@ def booking_by_flight_and_seat_number(flight: models.Flight, seat_number: int) -
     return models.Booking.objects.filter(flight=flight, seatNumber=seat_number).first()
 
 
-def all_locations() -> BaseManager[models.Location]:
+def all_locations():
     """Get all locations."""
     return models.Location.objects.all()
 
 
-def all_flights() -> BaseManager[models.Flight]:
+def all_flights():
     """Get all flights."""
     return models.Flight.objects.all()
