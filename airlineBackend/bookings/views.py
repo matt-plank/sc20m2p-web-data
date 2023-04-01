@@ -1,3 +1,5 @@
+import json
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -34,9 +36,9 @@ class BookingView(APIView):
         """Create a new booking."""
 
         # Get the flight ID, user's name, and seat number from request JSON
-        flight_id = request.data.get("flight_id")
+        flight_id = int(request.data.get("flight_id"))
         name = request.data.get("name")
-        seat_number = request.data.get("seat_number")
+        seat_number = int(request.data.get("seat_number"))
 
         # Check there is a flight with id flight_id
         flight = db.flight_by_id(flight_id)
