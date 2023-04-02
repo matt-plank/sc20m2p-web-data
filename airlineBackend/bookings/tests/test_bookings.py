@@ -97,7 +97,13 @@ class TestBookings(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.json(), {"bookingID": 1})
 
-        response = self.client.post("/bookings/paymentNotification", {"booking_id": 1, "payment_provider": "PayPal"})
+        response = self.client.post(
+            "/bookings/paymentNotification",
+            {
+                "booking_id": 1,
+                "payment_provider": "PayPal",
+            },
+        )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json(), {"bookingID": 1})
@@ -116,7 +122,13 @@ class TestBookings(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.json(), {"bookingID": 1})
 
-        response = self.client.post("/bookings/paymentNotification", {"booking_id": 2, "payment_provider": "PayPal"})
+        response = self.client.post(
+            "/bookings/paymentNotification",
+            {
+                "booking_id": 2,
+                "payment_provider": "PayPal",
+            },
+        )
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
@@ -134,6 +146,12 @@ class TestBookings(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.json(), {"bookingID": 1})
 
-        response = self.client.post("/bookings/paymentNotification", {"booking_id": 1, "payment_provider": "Stripe"})
+        response = self.client.post(
+            "/bookings/paymentNotification",
+            {
+                "booking_id": 1,
+                "payment_provider": "Stripe",
+            },
+        )
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
