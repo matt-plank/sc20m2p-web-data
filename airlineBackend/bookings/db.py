@@ -33,6 +33,22 @@ def all_locations():
     return models.Location.objects.all()
 
 
-def all_flights():
+def location_by_name(name: str) -> models.Location | None:
+    """Get a location by its name."""
+    return models.Location.objects.filter(name=name).first()
+
+
+def all_flights(from_location: models.Location | None = None, to_location: models.Location | None = None, date: str | None = None):
     """Get all flights."""
-    return models.Flight.objects.all()
+    flights = models.Flight.objects
+
+    if from_location is not None:
+        flights = flights.filter(fromLocation=from_location)
+
+    if to_location is not None:
+        flights = flights.filter(toLocation=to_location)
+
+    if date is not None:
+        flights = flights.filter(date=date)
+
+    return flights.all()

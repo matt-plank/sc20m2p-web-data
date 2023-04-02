@@ -11,8 +11,17 @@ class FlightView(APIView):
     Returns lists of flights according to various parameters."""
 
     def get(self, request):
-        """Get all flights."""
-        all_flights = db.all_flights()
+        """Get a list of flights."""
+        from_location = request.query_params.get("fromLocation")
+        to_location = request.query_params.get("toLocation")
+        date = request.query_params.get("date")
+
+        all_flights = db.all_flights(
+            from_location=db.location_by_name(from_location),
+            to_location=db.location_by_name(to_location),
+            date=date,
+        )
+
         serialized_flights = serializers.FlightSerializer(all_flights, many=True)
 
         return Response(data=serialized_flights.data, status=status.HTTP_200_OK)
