@@ -6,7 +6,9 @@ from . import db, models, payments, serializers
 
 
 class FlightView(APIView):
-    """Flight view."""
+    """Flight view.
+
+    Returns lists of flights according to various parameters."""
 
     def get(self, request):
         """Get all flights."""
@@ -16,19 +18,13 @@ class FlightView(APIView):
         return Response(data=serialized_flights.data, status=status.HTTP_200_OK)
 
 
-class LocationView(APIView):
-    """Location view."""
-
-    def get(self, request):
-        """Get all locations."""
-        all_locations = db.all_locations()
-        serialized_locations = serializers.LocationSerializer(all_locations, many=True)
-
-        return Response(data=serialized_locations.data, status=status.HTTP_200_OK)
-
-
 class BookingView(APIView):
-    """Booking view."""
+    """Booking view.
+
+    This view is called when the client wants to reserve a seat for a flight while they make a payment.
+    The booking is created, but not activated.
+    The main purpose of this view is to provide the client with a booking ID, which they can use to make
+    a payment with their chosen payment service. Then the airline can verify the payment is made only for this booking."""
 
     def post(self, request):
         """Create a new booking."""
@@ -66,7 +62,11 @@ class BookingView(APIView):
 
 
 class PaymentNotificationView(APIView):
-    """Payment notification view."""
+    """Payment notification view.
+
+    This view is called when the client wants to let the airline know that they've paid
+    for a booking. The airline can then verify this payment, and send a booking confirmation
+    to the client."""
 
     def post(self, request):
         """Create a new payment notification."""
