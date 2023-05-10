@@ -33,9 +33,8 @@ class TestBookings(TestCase):
     def test_create_booking_successful(self):
         """Test creating a booking (unpaid)."""
         response = self.client.post(
-            "/bookings/booking",
+            "/bookings/booking?id=1",
             {
-                "flight_id": 1,
                 "name": "John Smith",
                 "seat_number": 1,
             },
@@ -47,9 +46,8 @@ class TestBookings(TestCase):
     def test_create_booking_bad_flight_id(self):
         """Test creating a booking with a bad flight id."""
         response = self.client.post(
-            "/bookings/booking",
+            "/bookings/booking?id=3",
             {
-                "flight_id": 3,
                 "name": "John Smith",
                 "seat_number": 1,
             },
@@ -60,9 +58,8 @@ class TestBookings(TestCase):
     def test_create_booking_seat_number_below_1(self):
         """Test creating a booking with a seat number below 1."""
         response = self.client.post(
-            "/bookings/booking",
+            "/bookings/booking?id=1",
             {
-                "flight_id": 1,
                 "name": "John Smith",
                 "seat_number": 0,
             },
@@ -73,9 +70,8 @@ class TestBookings(TestCase):
     def test_create_booking_seat_number_too_large(self):
         """Test creating a booking with a seat number too large."""
         response = self.client.post(
-            "/bookings/booking",
+            "/bookings/booking?id=1",
             {
-                "flight_id": 1,
                 "name": "John Smith",
                 "seat_number": 101,
             },
@@ -86,9 +82,8 @@ class TestBookings(TestCase):
     def test_create_then_activate_booking(self):
         """Test creating a booking and then activating it."""
         response = self.client.post(
-            "/bookings/booking",
+            "/bookings/booking?id=1",
             {
-                "flight_id": 1,
                 "name": "John Smith",
                 "seat_number": 1,
             },
@@ -111,9 +106,8 @@ class TestBookings(TestCase):
     def test_create_then_activate_booking_bad_booking_id(self):
         """Test creating a booking and then activating it with a bad booking id."""
         response = self.client.post(
-            "/bookings/booking",
+            "/bookings/booking?id=1",
             {
-                "flight_id": 1,
                 "name": "John Smith",
                 "seat_number": 1,
             },
@@ -135,9 +129,8 @@ class TestBookings(TestCase):
     def test_create_then_activate_booking_bad_payment_provider(self):
         """Test creating a booking and then activating it with a bad payment provider."""
         response = self.client.post(
-            "/bookings/booking",
+            "/bookings/booking?id=1",
             {
-                "flight_id": 1,
                 "name": "John Smith",
                 "seat_number": 1,
             },

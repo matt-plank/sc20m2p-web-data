@@ -22,9 +22,12 @@ class FlightView(APIView):
             date=date,
         )
 
-        serialized_flights = serializers.FlightSerializer(all_flights, many=True)
+        serialized_flights = serializers.FlightSerializer(all_flights, many=True).data
 
-        return Response(data=serialized_flights.data, status=status.HTTP_200_OK)
+        for flight in serialized_flights:
+            flight["bookingURL"] = f"/bookings/booking?id={flight['id']}"
+
+        return Response(data=serialized_flights, status=status.HTTP_200_OK)
 
 
 class BookingView(APIView):
@@ -39,7 +42,7 @@ class BookingView(APIView):
         """Create a new booking."""
 
         # Get the flight ID, user's name, and seat number from request JSON
-        flight_id = int(request.data.get("flight_id"))
+        flight_id = int(request.query_params.get("id"))
         name = request.data.get("name")
         seat_number = int(request.data.get("seat_number"))
 
