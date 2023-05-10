@@ -88,7 +88,7 @@ class PaymentNotificationView(APIView):
         payment_provider = db.payment_provider_from_name(payment_provider_name)
 
         if payment_provider is None:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(data={"message": "Please indicate payment provider"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Find the booking
         booking = db.booking_by_id(booking_id)
