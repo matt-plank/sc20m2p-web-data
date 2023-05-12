@@ -1,3 +1,5 @@
+import uuid
+
 from bookings import models
 from django.test import TestCase
 from rest_framework import status
@@ -99,7 +101,7 @@ class TestBookings(TestCase):
         response = self.client.post(
             "/bookings/paymentNotification",
             {
-                "bookingID": 2,
+                "bookingID": uuid.uuid4(),
                 "paymentProvider": "PayPal",
             },
         )

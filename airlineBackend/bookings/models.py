@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 
@@ -26,7 +28,7 @@ class Flight(models.Model):
 class Booking(models.Model):
     """A booking for a specific flight."""
 
-    id = models.CharField(max_length=255, primary_key=True)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
     userName = models.CharField(max_length=255)
     activated = models.BooleanField(default=False)

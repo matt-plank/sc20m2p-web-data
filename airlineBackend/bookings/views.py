@@ -59,7 +59,6 @@ class BookingView(APIView):
 
         # Create the booking
         booking = models.Booking.objects.create(
-            id=uuid.uuid4(),
             flight=flight,
             userName=name,
         )
@@ -67,7 +66,7 @@ class BookingView(APIView):
         booking.save()
 
         # Return the uuid of the booking
-        return Response(data={"bookingID": booking.id}, status=status.HTTP_201_CREATED)  # type: ignore
+        return Response(data={"bookingID": str(booking.id)}, status=status.HTTP_201_CREATED)  # type: ignore
 
 
 class PaymentNotificationView(APIView):
