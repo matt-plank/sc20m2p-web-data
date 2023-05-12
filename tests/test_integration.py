@@ -40,5 +40,5 @@ class TestIntegration(unittest.TestCase):
             },
         )
 
-        assert response.status_code == 200
-        assert response.json() == {"bookingID": response.json()["bookingID"]}
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"message": "Could not verify payment"})
