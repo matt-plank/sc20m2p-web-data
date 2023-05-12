@@ -44,7 +44,15 @@ class TestBookings(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.json(), {"bookingID": response.json()["bookingID"]})
+        self.assertEqual(
+            response.json(),
+            {
+                "bookingID": response.json()["bookingID"],
+                "accountNo": "87654321",
+                "sortCode": "112233",
+                "cost": 23.0,
+            },
+        )
 
     def test_create_booking_bad_flight_id(self):
         """Test creating a booking with a bad flight id."""
@@ -71,7 +79,15 @@ class TestBookings(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.json(), {"bookingID": response.json()["bookingID"]})
+        self.assertEqual(
+            response.json(),
+            {
+                "bookingID": response.json()["bookingID"],
+                "accountNo": "87654321",
+                "sortCode": "112233",
+                "cost": 23.0,
+            },
+        )
 
         response = self.client.post(
             "/bookings/paymentNotification",
@@ -96,7 +112,15 @@ class TestBookings(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.json(), {"bookingID": response.json()["bookingID"]})
+        self.assertEqual(
+            response.json(),
+            {
+                "bookingID": response.json()["bookingID"],
+                "accountNo": "87654321",
+                "sortCode": "112233",
+                "cost": 23.0,
+            },
+        )
 
         response = self.client.post(
             "/bookings/paymentNotification",
@@ -120,7 +144,15 @@ class TestBookings(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.json(), {"bookingID": response.json()["bookingID"]})
+        self.assertEqual(
+            response.json(),
+            {
+                "bookingID": response.json()["bookingID"],
+                "accountNo": "87654321",
+                "sortCode": "112233",
+                "cost": 23.0,
+            },
+        )
 
         response = self.client.post(
             "/bookings/paymentNotification",

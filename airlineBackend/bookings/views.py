@@ -71,7 +71,7 @@ class BookingView(APIView):
                 "bookingID": str(booking.id),
                 "accountNo": "87654321",
                 "sortCode": "112233",
-                "cost": str(flight.ticketPrice),
+                "cost": flight.ticketPrice,
             },
             status=status.HTTP_201_CREATED,
             content_type="application/json",
