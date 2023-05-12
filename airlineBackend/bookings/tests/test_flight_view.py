@@ -42,7 +42,6 @@ class FlightViewTestCase(TestCase):
                     "date": "2023-06-01",
                     "capacity": 100,
                     "ticketPrice": 23.0,
-                    "bookingURL": "/bookings/booking?id=1",
                 },
                 {
                     "id": 2,
@@ -51,7 +50,6 @@ class FlightViewTestCase(TestCase):
                     "date": "2023-06-02",
                     "capacity": 100,
                     "ticketPrice": 19.0,
-                    "bookingURL": "/bookings/booking?id=2",
                 },
             ],
         )
@@ -70,7 +68,6 @@ class FlightViewTestCase(TestCase):
                     "date": "2023-06-01",
                     "capacity": 100,
                     "ticketPrice": 23.0,
-                    "bookingURL": "/bookings/booking?id=1",
                 },
             ],
         )

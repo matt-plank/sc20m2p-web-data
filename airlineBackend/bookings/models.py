@@ -29,11 +29,10 @@ class Booking(models.Model):
     id = models.CharField(max_length=255, primary_key=True)
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
     userName = models.CharField(max_length=255)
-    seatNumber = models.IntegerField()
     activated = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.userName} booked seat {self.seatNumber} on {self.flight}"
+        return f"{self.userName} booked on {self.flight}"
 
 
 class PaymentProvider(models.Model):

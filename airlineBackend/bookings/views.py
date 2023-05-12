@@ -26,9 +26,6 @@ class FlightView(APIView):
 
         serialized_flights = serializers.FlightSerializer(all_flights, many=True).data
 
-        for flight in serialized_flights:
-            flight["bookingURL"] = f"/bookings/booking?id={flight['id']}"
-
         return Response(data=serialized_flights, status=status.HTTP_200_OK)
 
 
@@ -44,30 +41,23 @@ class BookingView(APIView):
         """Create a new booking."""
 
         # Get the flight ID, user's name, and seat number from request JSON
-        flight_id = int(request.query_params.get("id"))
-        name = request.data.get("name")
-        seat_number = int(request.data.get("seat_number"))
+        flight_id = request.data.get("flightID")
+        name = request.data.get("firstName") + " " + request.data.get("lastName")
 
         # Check there is a flight with id flight_id
         flight = db.flight_by_id(flight_id)
         if flight is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        # Check the seat is between 1 and the capacity
-        if seat_number < 1 or seat_number > flight.capacity:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-
-        # Check there is no booking with the same flight and seat number
-        testBooking = db.booking_by_flight_and_seat_number(flight, seat_number)
-        if testBooking is not None:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        # Check if there are seats available
+        if flight.capacity < 1:
+            return Response(status=status.HTTP_410_GONE)
 
         # Create the booking
         booking = models.Booking.objects.create(
             id=uuid.uuid4(),
             flight=flight,
             userName=name,
-            seatNumber=seat_number,
         )
 
         booking.save()
@@ -87,8 +77,8 @@ class PaymentNotificationView(APIView):
         """Create a new payment notification."""
 
         # Get the booking ID and payment provider ID from request JSON
-        booking_id = request.data.get("booking_id")
-        payment_provider_name = request.data.get("payment_provider")
+        booking_id = request.data.get("bookingID")
+        payment_provider_name = request.data.get("paymentProvider")
 
         # Find the payment provider
         payment_provider = db.payment_provider_from_name(payment_provider_name)
@@ -109,5 +99,9 @@ class PaymentNotificationView(APIView):
         # Mark booking as paid
         booking.activated = True
         booking.save()
+
+        # Reduce flight capacity
+        booking.flight.capacity -= 1
+        booking.flight.save()
 
         return Response(data={"bookingID": booking.id}, status=status.HTTP_200_OK)  # type: ignore
