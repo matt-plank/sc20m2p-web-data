@@ -13,13 +13,20 @@ class TestIntegration(unittest.TestCase):
     def test_find_create_activate_booking(self):
         """Test finding a flight, creating a booking, and activating it."""
         # Find a suitable flight
-        flights = requests.get(FLIGHT_URL, {"from": "MAN", "to": "PRG", "date": "2023-06-01"})
+        flights = requests.get(
+            FLIGHT_URL,
+            {
+                "from": "MAN",
+                "to": "PRG",
+                "date": "2023-06-01",
+            },
+        )
 
         # Create a booking for that flight
         booking_response = requests.post(
             BOOKING_URL,
             {
-                "flightID": int(flights.json()[0]["flightID"]),
+                "flightID": flights.json()[0]["flightID"],
                 "firstName": "John",
                 "lastName": "Smith",
             },
