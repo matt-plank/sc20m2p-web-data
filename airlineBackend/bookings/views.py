@@ -95,7 +95,7 @@ class PaymentNotificationView(APIView):
         # Find the payment provider
 
         if payment_provider_name is None:
-            return Response(data={"message": "Please indicate payment provider"}, status=status.HTTP_400_BAD_REQUEST)
+            payment_provider_name = "Ella"  # Default payment provider - nobody else has finished theirs
 
         payment_provider = db.payment_provider_from_name(payment_provider_name)
 
