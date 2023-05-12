@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,6 +26,7 @@ SECRET_KEY = "django-insecure-umrcv9=0a@p$#df!+&p287&lo8^oaeoa*r(jicl7fvpnp%lv__
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+TESTING = "test" in sys.argv
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "sc20m2p.pythonanywhere.com"]
 
