@@ -66,7 +66,7 @@ class BookingView(APIView):
         booking.save()
 
         # Return the uuid of the booking
-        return Response(data={"bookingID": str(booking.id)}, status=status.HTTP_201_CREATED)  # type: ignore
+        return Response({"bookingID": str(booking.id)}, status=status.HTTP_201_CREATED, content_type="application/json")
 
 
 class PaymentNotificationView(APIView):
@@ -111,4 +111,4 @@ class PaymentNotificationView(APIView):
         booking.flight.capacity -= 1
         booking.flight.save()
 
-        return Response(data={"bookingID": booking.id}, status=status.HTTP_200_OK)  # type: ignore
+        return Response({"bookingID": booking.id}, status=status.HTTP_200_OK, content_type="application/json")  # type: ignore
