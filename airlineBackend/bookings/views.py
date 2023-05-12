@@ -66,7 +66,16 @@ class BookingView(APIView):
         booking.save()
 
         # Return the uuid of the booking
-        return Response({"bookingID": str(booking.id)}, status=status.HTTP_201_CREATED, content_type="application/json")
+        return Response(
+            {
+                "bookingID": str(booking.id),
+                "accountNo": "87654321",
+                "sortCode": "112233",
+                "cost": str(flight.ticketPrice),
+            },
+            status=status.HTTP_201_CREATED,
+            content_type="application/json",
+        )
 
 
 class PaymentNotificationView(APIView):
