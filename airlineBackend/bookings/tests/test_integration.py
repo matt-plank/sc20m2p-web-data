@@ -42,7 +42,7 @@ class TestIntegration(TestCase):
         flight_booking_url = flights.json()[0]["bookingURL"]
 
         # Create a booking for that flight
-        response = self.client.post(
+        booking_response = self.client.post(
             flight_booking_url,
             {
                 "name": "John Smith",
@@ -50,14 +50,14 @@ class TestIntegration(TestCase):
             },
         )
 
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.json(), {"bookingID": 1})
+        self.assertEqual(booking_response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(booking_response.json(), {"bookingID": 1})
 
         # Activate the booking for that flight (by notification of payment)
         response = self.client.post(
             "/bookings/paymentNotification",
             {
-                "booking_id": 1,
+                "booking_id": booking_response.json()["bookingID"],
                 "payment_provider": "PayPal",
             },
         )
