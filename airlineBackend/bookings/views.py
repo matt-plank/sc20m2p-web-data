@@ -109,7 +109,7 @@ class PaymentNotificationView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         # Check payment with the payment provider
-        if not payments.check_payment(booking, payment_provider, assume_true=True):
+        if not payments.check_payment(booking, float(booking.flight.ticketPrice), payment_provider):
             return Response(data={"message": "Could not verify payment"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Mark booking as paid

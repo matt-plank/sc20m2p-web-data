@@ -37,11 +37,8 @@ class TestIntegration(unittest.TestCase):
             PAYMENT_URL,
             {
                 "bookingID": booking_response.json()["bookingID"],
-                "paymentProvider": "PayPal",
             },
         )
-
-        print(response.json())
 
         assert response.status_code == 200
         assert response.json() == {"bookingID": response.json()["bookingID"]}
