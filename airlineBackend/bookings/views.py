@@ -1,3 +1,5 @@
+import uuid
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -62,6 +64,7 @@ class BookingView(APIView):
 
         # Create the booking
         booking = models.Booking.objects.create(
+            id=uuid.uuid4(),
             flight=flight,
             userName=name,
             seatNumber=seat_number,

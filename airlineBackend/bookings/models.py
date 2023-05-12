@@ -26,6 +26,7 @@ class Flight(models.Model):
 class Booking(models.Model):
     """A booking for a specific flight."""
 
+    id = models.CharField(max_length=255, primary_key=True)
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
     userName = models.CharField(max_length=255)
     seatNumber = models.IntegerField()

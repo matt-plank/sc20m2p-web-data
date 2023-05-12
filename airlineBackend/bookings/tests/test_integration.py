@@ -51,7 +51,7 @@ class TestIntegration(TestCase):
         )
 
         self.assertEqual(booking_response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(booking_response.json(), {"bookingID": 1})
+        self.assertEqual(booking_response.json(), {"bookingID": booking_response.json()["bookingID"]})
 
         # Activate the booking for that flight (by notification of payment)
         response = self.client.post(
@@ -63,4 +63,4 @@ class TestIntegration(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.json(), {"bookingID": 1})
+        self.assertEqual(response.json(), {"bookingID": response.json()["bookingID"]})

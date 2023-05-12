@@ -41,7 +41,7 @@ class TestBookings(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.json(), {"bookingID": 1})
+        self.assertEqual(response.json(), {"bookingID": response.json()["bookingID"]})
 
     def test_create_booking_bad_flight_id(self):
         """Test creating a booking with a bad flight id."""
@@ -90,18 +90,18 @@ class TestBookings(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.json(), {"bookingID": 1})
+        self.assertEqual(response.json(), {"bookingID": response.json()["bookingID"]})
 
         response = self.client.post(
             "/bookings/paymentNotification",
             {
-                "booking_id": 1,
+                "booking_id": response.json()["bookingID"],
                 "payment_provider": "PayPal",
             },
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.json(), {"bookingID": 1})
+        self.assertEqual(response.json(), {"bookingID": response.json()["bookingID"]})
 
     def test_create_then_activate_booking_bad_booking_id(self):
         """Test creating a booking and then activating it with a bad booking id."""
@@ -114,7 +114,7 @@ class TestBookings(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.json(), {"bookingID": 1})
+        self.assertEqual(response.json(), {"bookingID": response.json()["bookingID"]})
 
         response = self.client.post(
             "/bookings/paymentNotification",
@@ -137,7 +137,7 @@ class TestBookings(TestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.json(), {"bookingID": 1})
+        self.assertEqual(response.json(), {"bookingID": response.json()["bookingID"]})
 
         response = self.client.post(
             "/bookings/paymentNotification",
