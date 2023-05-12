@@ -8,7 +8,7 @@ def check_payment(booking: models.Booking, payment_provider: models.PaymentProvi
     if assume_true:
         return True
 
-    response = requests.post(payment_provider.url, data={"booking_id": booking.id})  # type: ignore
+    response = requests.get(payment_provider.url, {"bookingID": str(booking.id)})
 
     if response.status_code != 200:
         return False
