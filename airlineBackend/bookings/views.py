@@ -26,6 +26,10 @@ class FlightView(APIView):
 
         serialized_flights = serializers.FlightSerializer(all_flights, many=True).data
 
+        for flight in serialized_flights:
+            flight["flightID"] = flight["id"]
+            del flight["id"]
+
         return Response(data=serialized_flights, status=status.HTTP_200_OK)
 
 

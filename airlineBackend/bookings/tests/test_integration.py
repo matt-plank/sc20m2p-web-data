@@ -43,7 +43,7 @@ class TestIntegration(TestCase):
         booking_response = self.client.post(
             "/bookings/booking",
             {
-                "flightID": flights.json()[0]["id"],
+                "flightID": flights.json()[0]["flightID"],
                 "firstName": "John",
                 "lastName": "Smith",
             },

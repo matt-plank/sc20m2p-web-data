@@ -36,7 +36,7 @@ class FlightViewTestCase(TestCase):
             response.json(),
             [
                 {
-                    "id": 1,
+                    "flightID": 1,
                     "toLocation": "Prague",
                     "fromLocation": "Leeds",
                     "date": "2023-06-01",
@@ -44,7 +44,7 @@ class FlightViewTestCase(TestCase):
                     "ticketPrice": 23.0,
                 },
                 {
-                    "id": 2,
+                    "flightID": 2,
                     "toLocation": "Leeds",
                     "fromLocation": "Prague",
                     "date": "2023-06-02",
@@ -62,7 +62,7 @@ class FlightViewTestCase(TestCase):
             response.json(),
             [
                 {
-                    "id": 1,
+                    "flightID": 1,
                     "toLocation": "Prague",
                     "fromLocation": "Leeds",
                     "date": "2023-06-01",
